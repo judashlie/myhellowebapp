@@ -1,12 +1,13 @@
-{% load staticfiles %}
-<!doctype html>
-<html>
-	<head>
-		<title>My Hello Web App Project</title>
-		<link rel="stylesheet" href="{%static 'css/style.css' %}" />
-	</head>
-	<body>
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}
+	Homepage - {{ block.super }}
+{% endblock title %}
+
+{% block content %}
 		<h1>Hello, World!</h1>
 		<p>I am a basic web site.</p>
-	</body>
-</html>
+
+		<p>There are {{ number|apnumber }} dogs!</p>
+		<p>This is my name: {{ thing|truncatewords:1 }}</p>
+{% endblock content %}
