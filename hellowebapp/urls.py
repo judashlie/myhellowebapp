@@ -22,5 +22,7 @@ urlpatterns = [
     url(r'^$', views.index, name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
     url(r'^contact/$', TemplateView.as_view(template_name='contact.html'), name='contact'),
+    url(r'^problems/(?P<slug>[-\w]+)/$', views.problem_detail,
+    	name='problem_detail'),
     url(r'^admin/', include(admin.site.urls)),
 ]

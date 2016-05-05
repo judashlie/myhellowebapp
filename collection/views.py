@@ -1,13 +1,20 @@
 from django.shortcuts import render
+from collection.models import Problem
 
 # Create your views here.
 def index(request):
-	# this is the new view
 	# defining the variable
-	number = 6
-	thing = "Thing Name"
+	problems = Problem.objects.all()
 	# passing the variable to the view
 	return render(request, 'index.html', {
-		'number': number,
-		'thing': thing,
+		'problems': problems,
+		})
+
+def problem_detail(request, slug):
+	# grab the object
+	problem = Problem.objects.get(slug=slug)
+
+	# pass to the template
+	return render(request, 'problems/problem_detail.html',{
+		'problem': problem,
 		})
