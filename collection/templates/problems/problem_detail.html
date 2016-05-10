@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
-{% load humanize %}
 {% block title %}
-	Homepage - {{ block.super }}
+	{{ problem.name }} - {{ block.super }}
 {% endblock title %}
 
 {% block content %}
-		{% for problem in problems %}
-		<h2>{{ problem.name }}</h2>
+		<h1>{{ problem.name }}</h1>
 		<p>{{ problem.description }}</p>
-		{% endfor %}
+		<a href="{% url 'edit_problem' slug=problem.slug %}">edit me!</a>
 {% endblock content %}
