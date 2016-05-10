@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from collection.forms import ProblemForm
 from collection.models import Problem
+from django.template.defaultfilters import slugify
+from django.contrib.auth.decorators import login_required
+from django.http import Http404
 
 # Create your views here.
 def index(request):
@@ -20,9 +23,15 @@ def problem_detail(request, slug):
 		'problem': problem,
 		})
 
+@login_required
 def edit_problem(request, slug):
 	# grab the object
 	problem = Problem.objects.get(slug=slug)
+
+	# make sure the logged in user is the owner of the object
+	if problem.user != request.user:
+		raise Http404
+
 	# set the form
 	form_class = ProblemForm
 
@@ -43,3 +52,27 @@ def edit_problem(request, slug):
 		'problem': problem,
 		'form': form,
 	})
+
+def create_problem(request):
+	form_class = ProblemForm
+	# if coming from a submitted form, do this
+	if request.method == 'POST':
+		# grab data from the submitted form and apply to the form
+		form = form_class(request.POST)
+		if form.is_valid():
+			# create an instance, but don't save yet
+			problem = form.save(commit=False)
+			# set additional details
+			problem.user = request.user
+			problem.slug = slugify(problem.name)
+			# save the object
+			problem.save()
+			# redirect to newly created problem
+			return redirect('problem_detail', slug=problem.slug)
+		# otherwise just create the form
+	else:
+		form = form_class()
+
+	return render(request, 'problems/create_problem.html', {
+		'form': form,
+		})

@@ -6,5 +6,10 @@
 {% block content %}
 		<h1>{{ problem.name }}</h1>
 		<p>{{ problem.description }}</p>
+
+		{% if user == problem.user %}
+		<p>
 		<a href="{% url 'edit_problem' slug=problem.slug %}">edit me!</a>
+		</p>
+		{% endif %}
 {% endblock content %}
