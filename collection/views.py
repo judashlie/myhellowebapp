@@ -76,3 +76,18 @@ def create_problem(request):
 	return render(request, 'problems/create_problem.html', {
 		'form': form,
 		})
+
+def browse_by_name(request, initial=None):
+	if initial:
+		problems = Problem.objects.filter(name__istartswith=initial).order_by('name')
+	else:
+		problems = Problem.objects.all().order_by('name')
+	return render(request, 'search/search.html', {
+		'problems': problems,
+		'initial': initial,
+			})
+
+
+
+
+
